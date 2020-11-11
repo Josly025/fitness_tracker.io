@@ -3,7 +3,7 @@ const Workout = require("../models/workout.js");
 
 module.exports = function (app) {
   /// GET ALL route
-  app.post("/api/workouts", (req, res) => {
+  app.get("/api/workouts", (req, res) => {
     // FInd all workouts
     Workout.find()
       .then((data) => {
@@ -27,7 +27,7 @@ module.exports = function (app) {
   });
 
   /// PUT ROUTE  //with id
-  app.post("/api/workouts/:id", ({ body, params }, res) => {
+  app.put("/api/workouts/:id", ({ body, params }, res) => {
     //use findIdAndUpdate() method
     Workout.findByIdAndUpdate(params.id, {
       $push: { exercise: req.body },
