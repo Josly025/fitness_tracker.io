@@ -13,10 +13,15 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(logger("dev")); ///response status for deployment use
 // for database mongo - workout
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-});
+
+// mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+//   useNewUrlParser: true,
+//   useFindAndModify: false,
+// });
+
+//mongoAtlas connection key: MONGOATLAS_G
+const MONGOATLAS_G = process.env.MONGOATLAS_G || "mongodb://localhost/workout";
+mongoose.connect(MONGOATLAS_G, { useNewUrlParser: true });
 
 // routes
 require("./routes/apiRoutes.js")(app);
