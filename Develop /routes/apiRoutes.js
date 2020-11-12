@@ -1,12 +1,13 @@
 //requiring our workout model
+const app = require("express");
+// const db = require("../models");
 const Workout = require("../models/workout.js");
-const db = require("../models/workout.js");
-
+/////
 module.exports = function (app) {
   /// GET ALL route
   app.get("/api/workouts", (req, res) => {
     // FInd all workouts
-    db.Workout.find()
+    Workout.find({})
       .then((data) => {
         res.json(data);
       })
@@ -18,7 +19,7 @@ module.exports = function (app) {
   /// POST ROUTE
   app.post("/api/workouts", ({ body }, res) => {
     // Create and post new workout
-    db.Workout.create({ body })
+    Workout.create(body)
       .then((datab) => {
         res.json(datab);
       })
@@ -28,11 +29,15 @@ module.exports = function (app) {
   });
 
   /// PUT ROUTE  //with id
-  app.put("/api/workouts/:id", ({ body, params }, res) => {
+  app.put("/api/workouts/:id", ({ req, params }, res) => {
     //use findIdAndUpdate() method
-    db.Workout.findByIdAndUpdate(params.id, {
-      $push: { exercise: req.body },
-    })
+    Workout.findByIdAndUpdate(
+      { _id: params.id },
+      {
+        $push: { exercises: req.body },
+        // {new: true}
+      }
+    )
       .then((info) => {
         res.json(info);
       })
@@ -41,7 +46,8 @@ module.exports = function (app) {
       });
   });
   app.get("/api/workouts/range", (req, res) => {
-    db.Workout.find({})
+    Workout.find({})
+      .limit(7)
       .then((dbUser) => {
         res.json(dbUser);
       })
