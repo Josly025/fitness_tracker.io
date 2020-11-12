@@ -1,11 +1,12 @@
 //requiring our workout model
 const Workout = require("../models/workout.js");
+const db = require("../models/workout.js");
 
 module.exports = function (app) {
   /// GET ALL route
   app.get("/api/workouts", (req, res) => {
     // FInd all workouts
-    Workout.find()
+    db.Workout.find()
       .then((data) => {
         res.json(data);
       })
@@ -15,11 +16,11 @@ module.exports = function (app) {
   });
 
   /// POST ROUTE
-  app.post("/api/workouts", (req, res) => {
+  app.post("/api/workouts", ({ body }, res) => {
     // Create and post new workout
-    Workout.create({})
-      .then((info) => {
-        res.json(info);
+    db.Workout.create({ body })
+      .then((datab) => {
+        res.json(datab);
       })
       .catch((err) => {
         res.json(err);
@@ -29,7 +30,7 @@ module.exports = function (app) {
   /// PUT ROUTE  //with id
   app.put("/api/workouts/:id", ({ body, params }, res) => {
     //use findIdAndUpdate() method
-    Workout.findByIdAndUpdate(params.id, {
+    db.Workout.findByIdAndUpdate(params.id, {
       $push: { exercise: req.body },
     })
       .then((info) => {
@@ -38,8 +39,9 @@ module.exports = function (app) {
       .catch((err) => {
         res.json(err);
       });
-
-    User.create(user)
+  });
+  app.get("/api/workouts/range", (req, res) => {
+    db.Workout.find({})
       .then((dbUser) => {
         res.json(dbUser);
       })
